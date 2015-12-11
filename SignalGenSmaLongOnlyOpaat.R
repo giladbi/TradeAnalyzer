@@ -42,13 +42,14 @@ configureSignalParms <- function(stockPrices,
     return(stockPrices)
 }
 
-## Returns an integer vector corresponding to an SMA cross-over strategy as
-## follows:
-##    1 if (fastSmas - slowSmas) >  tol * price, i.e. fast SMA is above slow SMA
-##   -1 if (slowSmas - fastSmas) >  tol * price, i.e. slow SMA is above fast SMA
-##    0 if |fastSmas - slowSmas| <= tol * price, fast & slow SMA close together
-## fastSmas -
-## slowSmas -
+## Returns an integer vector corresponding to an SMA cross-over strategy. For
+## each fastSma in fastSmas and slowSma in slowSmas, value calc'd as follows:
+##    1 if (fastSma - slowSma) >  tol * price, i.e. fast SMA is above slow SMA
+##   -1 if (slowSma - fastSma) >  tol * price, i.e. slow SMA is above fast SMA
+##    0 if |fastSma - slowSma| <= tol * price, fast & slow SMA close together OR
+##      fastSma in NaN OR slow SMA is NaN
+## fastSmas - vector of fast SMA values
+## slowSmas - vector of slow SMA values
 ## tol - tolerance which is used to determine whether fast and slow SMAs are 
 ##       different enough to be considered being above or below one another.
 ##       When |fastSma - slowSma| <= (price * tol), fastSma and slowSma are
@@ -56,6 +57,7 @@ configureSignalParms <- function(stockPrices,
 getSmaSignals <- function(prices, fastSmas, slowSmas, tol) {
     fastSmaPositions <- vector(mode="integer", length=length(prices)) # init 0's
     for(i in 1:length(prices)) {
+        if(is.nan(fastSmas[i]) || is.nan(slowSmas[i])) { next }
         if((fastSmas[i] - slowSmas[i]) >  tol * prices[i]) {
             fastSmaPositions[i] <- 1
         }
