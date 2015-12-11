@@ -61,9 +61,9 @@ getNetTable <- function(simResults, priceCol="Close",
                         buyComm=10.00, sellComm=10.00,
                         ignoreCurrentOpenPos=TRUE) {
     library(dplyr)
+    sells <- filter(simResults, Actions=="SELL")
     exitDates <- sells$Date;
     sellPrices <- sells$Close
-    sells <- filter(simResults, Actions=="SELL")
     completeCount <- length(sells$Shares)
     exitDates <- sells$Date;
     sellPrices <- sells[, as.character(priceCol)]
