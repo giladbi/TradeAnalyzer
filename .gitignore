@@ -1,0 +1,5 @@
+# files used for local dev
+*.RData
+*.RHistory
+# directories
+dev_data/

@@ -20,8 +20,9 @@ Initial release. First implemented strategy: classic **simple moving average** (
 TDB
 
 ## Roadmap & Proposed Future Work
-#### TBD  
-#### TBD
+#### Support Resistance
+#### Bollinger Bands
+#### MACD
 
 ## Crazy Ideas...
 #### Neural Net Classification-based strategies
