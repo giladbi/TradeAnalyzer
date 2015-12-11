@@ -7,9 +7,17 @@ Each strategy to be evaluated by the TA requires writing three components.  The 
 
 A short 5 slide presentation of the project can be found [here](http://example.com)
 
+## Architecture
+The TA is architected to be modular in that to implement a new strategy, you only need to write a new stratgey which conforms to the interface.
+
+### Writing a New Strategy
+TBD
+
 ## Revision History
-#### Rev 1 - 12/27/2015 - Initial release. First implemented strategy: classic **simple moving average** (SMA) cross-over strategy: only long positions permitted, long positions must be closed before opening new position, default price = closing
-#### Rev 2 - mm/dd/2016 - TDB
+#### Rev 1 - 12/27/2015
+Initial release. First implemented strategy: classic **simple moving average** (SMA) cross-over strategy: only long positions permitted, long positions must be closed before opening new position, default price = closing
+#### Rev 2 - mm/dd/2016
+TDB
 
 ## Roadmap & Proposed Future Work
 #### TBD  

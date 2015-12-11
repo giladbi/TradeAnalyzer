@@ -10,6 +10,18 @@ setWorking <- function(laptopSys=TRUE) {
     setwd(dirWorking)
 }
 
+addSimColumns <- function(prices, strategy, sigParms) {
+    source(strategy)
+    source("DataManager.R")
+    source("StrategySimulator.R")
+    priceData <- configureSignalParms(prices, sigParms)
+    priceData <- appendSignals(priceData)
+    priceData <- getActionsBHS(priceData)
+    priceData <- allInAllOutOaatOnlyLong(priceData)
+    
+    return(priceData)
+}
+
 ## Returns a data frame of the results of a simulation for a stock of a given
 ## ticker, from startDate to endDate, using strategy.
 ## ticker - ticker symbol for stock to run strategy on (e.g. JNJ, AAPL, etc.)
@@ -24,25 +36,10 @@ doSimulation <- function(ticker, signalParms=c(fastDays=9, slowDays=18),
                          startDate = as.character(Sys.Date()-365),
                          endDate = as.character(Sys.Date()),
                          strategy = "SignalGenSmaLongOnlyOpaat.R") {
-    source(strategy)
-    source("DataManager.R")
     priceData <- getStockQuotes(ticker, startDate, endDate)
-    priceData <- configureSignalParms(priceData, signalParms)
-    priceData <- appendSignals(priceData)
-    priceData <- getActionsBHS(priceData)
-    priceData <- simulateStrategy(priceData)
+    # next line sources StrategySimulator.R for addSimColumns & getNetTable
+    priceData <- addSimColumns(priceData, strategy, signalParms)
     
-    return(priceData)
+    return(getNetTable(priceData))
 }
 
-getBuys <- function(simResults) {
-    #install.packages("dplyr")
-    library(dplyr)
-    return(filter(simResults, Actions=="BUY"))
-}
-
-getSells <- function(simResults) {
-    #install.packages("dplyr")
-    library(dplyr)
-    return(filter(simResults, Actions=="SELL"))
-}

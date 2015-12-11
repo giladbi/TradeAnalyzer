@@ -43,7 +43,7 @@ configureSignalParms <- function(stockPrices,
 }
 
 ## Returns an integer vector corresponding to an SMA cross-over strategy. For
-## each fastSma in fastSmas and slowSma in slowSmas, value calc'd as follows:
+## each fastSma in fastSmas and slowSma in slowSmas, values calc'd as follows:
 ##    1 if (fastSma - slowSma) >  tol * price, i.e. fast SMA is above slow SMA
 ##   -1 if (slowSma - fastSma) >  tol * price, i.e. slow SMA is above fast SMA
 ##    0 if |fastSma - slowSma| <= tol * price, fast & slow SMA close together OR
@@ -165,52 +165,3 @@ getActionsBHS <- function(pricesWithSignal) {
     return(pricesWithSignal)
 }
 
-## Appends 3 columns to priceSignalsAction dataframe:
-## Share, Cash_Balance, and Account_Value.
-## Basic position sizing strategy: buy as many shares as account balance allows
-## priceSignalsAction must contain the following 2 columns/fields:
-## 1) column with name specified in calcCol
-## 2) Action
-simulateStrategy <- function(priceSignalsAction, startAmt=10000.00,
-                             calcCol="Close") {
-    prices <- priceSignalsAction[, as.character(calcCol)]
-    sampleCount <- length(priceSignalsAction$Action)
-    shares <- vector(mode="integer", length=sampleCount)
-    balance <- vector(mode="numeric", length=sampleCount)
-    balance[1] <- startAmt
-    value <- vector(mode="numeric", length=sampleCount)
-    value[1] <- startAmt
-    for(i in 2:sampleCount) {
-        if(priceSignalsAction$Action[i] == "HOLD") {
-            shares[i] <- shares[i-1]
-            balance[i] <- balance[i-1]
-            val <- balance[i-1] + (shares[i] * prices[i])
-            value[i] <- floor(val * 100) / 100
-        }
-        else if(priceSignalsAction$Action[i] == "BUY") {
-            shares[i] <- as.integer(balance[i-1]/prices[i])
-            bal <- balance[i-1] - (shares[i] * prices[i])
-            balance[i] <- floor(bal * 100) / 100
-            val <- balance[i] + (shares[i] * prices[i])
-            value[i] <- floor(val * 100) / 100
-        }
-        else if(priceSignalsAction$Action[i] == "SELL") {
-            # sell all shares
-            sold <- shares[i-1]
-            shares[i] <- 0
-            bal <- balance[i-1] + (sold * prices[i]) # all cash
-            balance[i] <- floor(bal * 100) / 100
-            value[i] <- balance[i]
-        }
-        else {  # should be unreachable
-            shares[i] <- NaN
-            balance[i] <- NaN
-            value[i] <- Nan
-        }
-    }
-    priceSignalsAction[, "Shares"] <- shares
-    priceSignalsAction[, "Cash_Balance"] <- balance
-    priceSignalsAction[, "Account_Value"] <- value
-    
-    return(priceSignalsAction)
-}
