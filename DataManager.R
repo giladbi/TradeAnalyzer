@@ -55,7 +55,7 @@ getCompletedYearsBetweenDates <- function(startDate, endDate) {
 ## vector in this case will span at most a maxAllowableDays number of days in a
 ## portion of the range between startDate and endDate.
 ## 
-getDateRanges <- function(startDate, endDate=as.character(Sys.Date()),
+getDateRanges <- function(startDate, endDate,
                           maxAllowableDays=360, maxAllowableYears=10) {
     dateIntervals <- list(c(start=startDate, end=endDate))
     
@@ -155,8 +155,9 @@ getSinglePeriodYqlQuotes <- function(ticker, startYYYY_MM_DD,
 }
 
 ## Returns a dataframe with quotes between startDate and endDate
-## for ticker symbol ticker.
-getStockQuotes <- function(ticker, startDate, endDate) {
+## for ticker symbol ticker.  endDate defaults to todays date.
+getStockQuotes <- function(ticker, startDate, 
+                           endDate=as.character(Sys.Date())) {
     dateRanges <- getDateRanges(startDate, endDate)
     quoteCount <- length(dateRanges)
     sdate <- dateRanges[[1]]["start"]

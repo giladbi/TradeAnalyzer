@@ -39,9 +39,13 @@ doSimulation <- function(ticker,
                          startDate = as.character(Sys.Date()-365),
                          endDate = as.character(Sys.Date()),
                          signalParms=c(fastDays=9, slowDays=18),
-                         signalGen = "SignalGenSmaLongOnlyOpaat.R") {
-    source("DataManager.R")
-    priceData <- getStockQuotes(ticker, startDate, endDate)
+                         signalGen = "SignalGenSmaLongOnlyOpaat.R",
+                         priceData=NULL) {
+    if(is.null(priceData)) {
+        source("DataManager.R")
+        priceData <- getStockQuotes(ticker, startDate, endDate)
+    }
+    
     # next line sources StrategySimulator.R for addSimColumns & getNetTable
     priceData <- addSimColumns(priceData, signalGen, signalParms)
     
