@@ -12,8 +12,89 @@ getSP500Tickers <- function() {
     sp500tickers <- read.csv(sp500url)
 }
 
-## Makes a REST call to get historical stock prices from yahoo finance and
-## returns a dataframe with the Date, High, Low, open, close and volume for 
+## Returns the number of query periods between startDate and endDate where
+## the number of days in all but the most recent (last) query period are
+## maxAllowableDays.  The most recent period which will usually be less than
+## maxAllowableDays because it will typically be a partial period.
+getQueryPeriods <- function(startDate, endDate, maxAllowableDays) {
+    queryDays <- ceiling(
+                     as.integer(
+                         difftime(as.Date(endDate),
+                         as.Date(startDate),
+                         units="days")
+                     ) / maxAllowableDays)
+    
+    return(queryDays)
+}
+
+## Returns the number of completed years between startDate and endDate where:
+## startDate - date further back in time from endDate
+## endDate - further forward in time than startDate
+getCompletedYearsBetweenDates <- function(startDate, endDate) {
+    d1 <- as.Date(startDate)
+    d2 <- as.Date(endDate)
+    #http://stackoverflow.com/questions/19687334/is-it-possible-to-count-the-distance-between-two-dates-in-months-or-years/19687995#19687995
+    completedYears <- length(seq(from=d1, to=d2, by='year')) - 1
+    
+    return(completedYears)
+}
+
+## This function is used to break a date range into a list of component date
+## ranges.  It returns a list of character vectors where each vector contains
+## two strings of the form yyyy-mm-dd.
+##
+## The first string in each character vector is the starting date of a query
+## period.  The second is the ending date of the period.
+## 
+## If the number of days between startDate and endDate is less than
+## maxAllowableDays, then a list with a single vector containing startDate and
+## endDate will be returned.
+##
+## If the number of days between startDate and endDate is greater than
+## maxAllowableDays, then a list with 2 or more vectors will be returned.  Each
+## vector in this case will span at most a maxAllowableDays number of days in a
+## portion of the range between startDate and endDate.
+## 
+getDateRanges <- function(startDate, endDate=as.character(Sys.Date()),
+                          maxAllowableDays=360, maxAllowableYears=10) {
+    dateIntervals <- list(c(start=startDate, end=endDate))
+    
+    if(getCompletedYearsBetweenDates(startDate, endDate) >= maxAllowableYears) {
+        adjustedStart <- as.POSIXlt(as.Date(endDate))
+        adjustedStart$year <- adjustedStart$year - 10
+        adjustedStart <- as.Date(adjustedStart)
+        adjustedStart <- as.character(adjustedStart)
+        dateIntervals <- list(c(start=adjustedStart, end=endDate))
+        startDate <- adjustedStart
+        queryPeriods <- getQueryPeriods(startDate, endDate, maxAllowableDays)
+    }
+    
+    queryPeriods <- getQueryPeriods(startDate, endDate, maxAllowableDays)
+    
+    if(queryPeriods > 1) {
+        firstEnd <- as.Date(startDate) + maxAllowableDays
+        dateIntervals <- list(c(start=startDate, end=as.character(firstEnd)))
+        for(i in 2:queryPeriods) {
+            dateInterval <- dateIntervals[[i-1]]
+            nextStart <- as.Date(dateInterval["end"]) + 1
+            newEnd <- nextStart + maxAllowableDays
+            if(i >= queryPeriods) {
+                dateIntervals[[i]] <- c(start=as.character(nextStart),
+                                        end=endDate)
+            }
+            else {
+                dateIntervals[[i]] <- c(start=as.character(nextStart),
+                                        end=as.character(newEnd))
+            }
+            
+        }
+    }
+    
+    return(dateIntervals)
+}
+
+## Makes a single REST call to get historical stock prices from yahoo finance 
+## and returns a dataframe with the Date, High, Low, open, close and volume for 
 ## the symbol passed in over the requested date range.
 ##
 ## IF NO DATA COULD BE FOUND FOR TICKER, AN EMPTY DATAFRAME WILL BE RETURNED!
@@ -32,8 +113,8 @@ getSP500Tickers <- function() {
 ##
 ## https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20yahoo.finance.historicaldata%20where%20symbol%20%3D%20%22AAPL%22%20and%20startDate%20%3D%20%222015-01-01%22%20and%20endDate%20%3D%20%222015-12-01%22&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys
 ## !!!! HAD TO CHANGE https TO http FOR THE CALL TO xmlTreeParse TO WORK !!!!
-getStockQuotes <- function(ticker, startYYYY_MM_DD, endYYYY_MM_DD,
-                           dataFrame=NULL) {
+getSinglePeriodYqlQuotes <- function(ticker, startYYYY_MM_DD,
+                                     endYYYY_MM_DD, dataFrame=NULL) {
     #install.packages("XML"); install.packages("dplyr")
     library(XML)
     library(dplyr)
@@ -71,4 +152,24 @@ getStockQuotes <- function(ticker, startYYYY_MM_DD, endYYYY_MM_DD,
     }
     
     return(df)
+}
+
+## Returns a dataframe with quotes between startDate and endDate
+## for ticker symbol ticker.
+getStockQuotes <- function(ticker, startDate, endDate) {
+    dateRanges <- getDateRanges(startDate, endDate)
+    quoteCount <- length(dateRanges)
+    sdate <- dateRanges[[1]]["start"]
+    edate <- dateRanges[[1]]["end"]
+    quotes <- getSinglePeriodYqlQuotes(ticker, sdate, edate)
+    if(quoteCount > 1) {
+        for(i in 2:quoteCount) {
+            sdate <- dateRanges[[i]]["start"]
+            edate <- dateRanges[[i]]["end"]
+            quotes <- rbind(quotes,
+                            getSinglePeriodYqlQuotes(ticker, sdate, edate))
+        }
+    }
+    
+    return(quotes)
 }
