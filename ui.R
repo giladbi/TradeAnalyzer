@@ -32,10 +32,8 @@ pageWithSidebar(
     mainPanel(
         h4('Company Ticker:'),
         verbatimTextOutput("oidstock"),
-        h4('Fast SMA:'),
-        verbatimTextOutput("oidfsma"),
-        h4('Slow SMA:'),
-        verbatimTextOutput("oidssma"),
+        h4('Signal & Parameters:'),
+        verbatimTextOutput("signalAndParams"),
         h4('Query Start & End Dates:'),
         verbatimTextOutput("oidBothQueryDates")
     )
