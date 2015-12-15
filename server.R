@@ -5,7 +5,15 @@ shinyServer(
         output$oidstock <- renderPrint({input$ticker})
         output$oidfsma <- renderPrint({input$fastSMA})
         output$oidssma <- renderPrint({input$slowSMA})
-        output$oidsdate <- renderPrint({input$startQuery})
-        output$oidedate <- renderPrint({input$endQuery})
+        
+        dateRangeInput <- reactive({
+            paste0("Query starts: ", input$queryDateRange[1],
+                   " | Query ends: ", input$queryDateRange[2])
+        })
+        
+        output$oidBothQueryDates <- renderPrint({
+            dateRangeInput()
+        })
+        
     }
 )
