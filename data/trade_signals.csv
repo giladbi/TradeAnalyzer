@@ -1,0 +1,2 @@
+trade_signal,description
+SMA cross-over,entry when fast goes above slow SMA | exit when fast drops below slow SMA
