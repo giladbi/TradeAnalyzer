@@ -174,3 +174,16 @@ getStockQuotes <- function(ticker, startDate,
     
     return(quotes)
 }
+
+## Writes downloaded quotes to a csv file to be reread later
+## tickers - vector of ticker symbols
+## startDate - starting date for the quote in format yyyy-mm-dd
+## endDate - ending date for the quote in format yyyy-mm-dd
+writeQuotes <- function(tickers, startDate, endDate=as.character(Sys.Date())) {
+    for(i in 1:length(tickers)) {
+        quotes <- getStockQuotes(tickers[i], startDate, endDate)
+        filePath <- paste0("./data/", tickers[i], ".csv")
+        write.csv(quotes, filePath)
+        cat("Completed writing ", filePath)
+    }
+}
