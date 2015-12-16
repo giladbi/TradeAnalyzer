@@ -23,13 +23,28 @@ shinyServer(
             dateRangeInput()
         })
         
-        runSim <- reactive({
-            doSimulation(input$ticker)
+        runSim <- eventReactive(input$runSimButton, {
+            doSimulation(input$ticker,
+                         as.character(input$queryDateRange[1]),
+                         as.character(input$queryDateRange[2]),
+                         signalParms=c(fastDays=input$fastSMA,
+                                       slowDays=input$slowSMA))
         })
         
         output$trades <- renderTable({
             runSim()
         })
+        
+#         observeEvent(input$runSimButton, {
+#             output$trades <- renderTable({
+#                 doSimulation(input$ticker,
+#                              as.character(input$queryDateRange[1]),
+#                              as.character(input$queryDateRange[2]),
+#                              signalParms=c(fastDays=input$fastSMA,
+#                                            slowDays=input$slowSMA))
+#             })
+#         })
+        
         
     }
 )

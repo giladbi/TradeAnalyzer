@@ -1,12 +1,15 @@
 # Get all 30 DJIA symbols to populate the Company select box
 dow30Url <- "http://raw.githubusercontent.com/MichaelSzczepaniak/TradeAnalyzer/master/data/dow30.csv"
-dow30Stocks <- read.csv(dowUrl, stringsAsFactors = FALSE)
+dow30Stocks <- read.csv(dow30Url, stringsAsFactors = FALSE)
+
 # Get 4 ticker symbols for demo
 demo4TickersUrl <- "https://raw.githubusercontent.com/MichaelSzczepaniak/TradeAnalyzer/master/data/demo4Tickers.csv"
 demoStocks <- read.csv(demo4TickersUrl, stringsAsFactors = FALSE)
 
-tickers <- dowStocks$ticker
-names(tickers) <- dowStocks$company_name
+# tickers <- dowStocks$ticker
+tickers <- demoStocks$ticker
+# names(tickers) <- dowStocks$company_name
+names(tickers) <- demoStocks$company_name
 stockList <- as.list(tickers)
 # Get the trading signals to populate Trade Signal select box
 tradeSignalsUrl <- "http://raw.githubusercontent.com/MichaelSzczepaniak/TradeAnalyzer/master/data/trade_signals.csv"
@@ -23,7 +26,7 @@ tenYearsAgoToday <- function() {
 }
 
 # Dates to use for demo mode
-demoStartDate <- "2005-12-15"; demoEndDate <- "2015-12-15"
+demoStartDate <- "2014-12-14"; demoEndDate <- "2015-12-14"
 
 pageWithSidebar(
     headerPanel("Trade Evaluator"),
@@ -40,7 +43,8 @@ pageWithSidebar(
                        start=demoStartDate, end=demoEndDate,
                        min=demoStartDate, max=demoEndDate),
         numericInput('accBalance', 'Starting Account Balance:',
-                     10000, min = 5000, max = 1000000, step = 500)
+                     10000, min = 5000, max = 1000000, step = 500),
+        actionButton('runSimButton', 'Run Simulation')
     ),
     mainPanel(
         h4('Company Ticker:'),
