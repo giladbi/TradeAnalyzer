@@ -142,11 +142,13 @@ getSinglePeriodYqlQuotes <- function(ticker, startYYYY_MM_DD,
     Date <- as.Date(xpathSApply(rootNode, "//Date", xmlValue), date.format)
     # If we pass in a populated dataframe, assume we need to append to it
     if(is.null(dataFrame)) {
-        df <- data.frame(Symbol=ticker, Date, High, Low, Open, Close, Volume)
+        df <- data.frame(Symbol=ticker, Date=as.character(Date),
+                         High, Low, Open, Close, Volume)
         df <- arrange(df, Date)
     }
     else {
-        temp <- data.frame(Symbol=ticker, Date, High, Low, Open, Close, Volume)
+        temp <- data.frame(Symbol=ticker, Date=as.character(Date),
+                           High, Low, Open, Close, Volume)
         temp <- arrange(temp, Date)
         df <- rbind(dataFrame, temp)
     }
@@ -186,4 +188,14 @@ writeQuotes <- function(tickers, startDate, endDate=as.character(Sys.Date())) {
         write.csv(quotes, filePath)
         cat("Completed writing ", filePath)
     }
+}
+
+getDemoQuotes <- function(ticker, startDate,
+                          endDate=as.character(Sys.Date())) {
+    library(dplyr)
+    demoQuotesPrefix <- "https://raw.githubusercontent.com/MichaelSzczepaniak/TradeAnalyzer/master/data/"
+    demoQuotesPath <- paste0(demoQuotesPrefix, ticker, ".csv")
+    quotes <- read.csv(demoQuotesPath, stringsAsFactors = FALSE)
+    
+    return(quotes)
 }

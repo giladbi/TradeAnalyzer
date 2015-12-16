@@ -14,6 +14,17 @@ tradeSignalsUrl <- "http://raw.githubusercontent.com/MichaelSzczepaniak/TradeAna
 tradeSignals <- read.csv(tradeSignalsUrl, stringsAsFactors = FALSE)
 tradeSignalList <- as.list((tradeSignals$trade_signal))
 
+## Returns the date that's 10 years ago today in the format:
+## yyyy-mm-dd.
+tenYearsAgoToday <- function() {
+    today <- as.POSIXlt(Sys.Date())
+    today$year <- today$year - 10
+    return(as.character(today))
+}
+
+# Dates to use for demo mode
+demoStartDate <- "2005-12-15"; demoEndDate <- "2015-12-15"
+
 pageWithSidebar(
     headerPanel("Trade Evaluator"),
     sidebarPanel(
@@ -25,7 +36,9 @@ pageWithSidebar(
         ),
         numericInput('fastSMA', 'Fast SMA:', 9, min = 2, max = 250, step = 1),
         numericInput('slowSMA', 'Slow SMA:', 18, min = 3, max = 250, step = 1),
-        dateRangeInput('queryDateRange', label = h3("Quote Date Range:")),
+        dateRangeInput('queryDateRange', label = h3("Quote Date Range:"),
+                       start=demoStartDate, end=demoEndDate,
+                       min=demoStartDate, max=demoEndDate),
         numericInput('accBalance', 'Starting Account Balance:',
                      10000, min = 5000, max = 1000000, step = 500)
     ),
@@ -35,6 +48,8 @@ pageWithSidebar(
         h4('Signal & Parameters:'),
         verbatimTextOutput("signalAndParams"),
         h4('Query Start & End Dates:'),
-        verbatimTextOutput("oidBothQueryDates")
+        verbatimTextOutput("oidBothQueryDates"),
+        h4('Trades Using This Strategy:'),
+        tableOutput("trades")
     )
 )

@@ -1,4 +1,4 @@
-
+source("TradingEvaluator.R")
 
 shinyServer(
     function(input, output) {
@@ -21,6 +21,14 @@ shinyServer(
         
         output$oidBothQueryDates <- renderPrint({
             dateRangeInput()
+        })
+        
+        runSim <- reactive({
+            doSimulation(input$ticker)
+        })
+        
+        output$trades <- renderTable({
+            runSim()
         })
         
     }
