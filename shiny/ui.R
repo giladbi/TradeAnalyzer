@@ -1,9 +1,9 @@
 # Get all 30 DJIA symbols to populate the Company select box
-dow30Url <- "http://raw.githubusercontent.com/MichaelSzczepaniak/TradeAnalyzer/master/data/dow30.csv"
+dow30Url <- "http://raw.githubusercontent.com/MichaelSzczepaniak/TradeAnalyzer/master/shiny/data/dow30.csv"
 dow30Stocks <- read.csv(dow30Url, stringsAsFactors = FALSE)
 
 # Get 4 ticker symbols for demo
-demo4TickersUrl <- "https://raw.githubusercontent.com/MichaelSzczepaniak/TradeAnalyzer/master/data/demo4Tickers.csv"
+demo4TickersUrl <- "https://raw.githubusercontent.com/MichaelSzczepaniak/TradeAnalyzer/master/shiny/data/demo4Tickers.csv"
 demoStocks <- read.csv(demo4TickersUrl, stringsAsFactors = FALSE)
 
 # tickers <- dowStocks$ticker
@@ -12,7 +12,7 @@ tickers <- demoStocks$ticker
 names(tickers) <- demoStocks$company_name
 stockList <- as.list(tickers)
 # Get the trading signals to populate Trade Signal select box
-tradeSignalsUrl <- "http://raw.githubusercontent.com/MichaelSzczepaniak/TradeAnalyzer/master/data/trade_signals.csv"
+tradeSignalsUrl <- "http://raw.githubusercontent.com/MichaelSzczepaniak/TradeAnalyzer/master/shiny/data/trade_signals.csv"
 #tradeSignalsUrl <- "./data/trade_signals.csv"
 tradeSignals <- read.csv(tradeSignalsUrl, stringsAsFactors = FALSE)
 tradeSignalList <- as.list((tradeSignals$trade_signal))
