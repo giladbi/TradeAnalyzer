@@ -75,9 +75,9 @@ getNetTable <- function(simResults, priceCol="Close",
                              buys[, as.character(priceCol)])
     netPLs <- (floor(netPLs * 100) / 100) - (buyComm + sellComm)
     netTable <- data.frame(BuyOn=entryDates, BuyPrice=buyPrices,
-                           Shares=buys$Shares,
+                           Shares=as.integer(buys$Shares),
                            SellOn=exitDates, SellPrice=sellPrices, 
-                           ProfitLoss=netPLs)
+                           ProfitLoss=netPLs, stringsAsFactors = FALSE)
     
     return(netTable)
 }
