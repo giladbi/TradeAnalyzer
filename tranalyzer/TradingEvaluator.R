@@ -10,13 +10,13 @@ setWorking <- function(laptopSys=TRUE) {
     setwd(dirWorking)
 }
 
-addSimColumns <- function(prices, signalGen, sigParms) {
+addSimColumns <- function(prices, signalGen, sigParms, startBalance) {
     source(signalGen)
     priceData <- configureSignalParms(prices, sigParms)
     priceData <- appendSignals(priceData)
     priceData <- getActionsBHS(priceData)
     source("StrategySimulator.R")
-    priceData <- allInAllOutOaatOnlyLong(priceData)
+    priceData <- allInAllOutOaatOnlyLong(priceData, startBalance)
     
     return(priceData)
 }
@@ -35,11 +35,13 @@ addSimColumns <- function(prices, signalGen, sigParms) {
 ##           ending date of the simulation. Default is today
 ## signalGen - R source file used to implement the signal generator to use for
 ##             the simulation. Default is SignalGenSmaLongOnlyOpaat.R
+##
 doSimulation <- function(ticker,
                          startDate = as.character(Sys.Date()-365),
                          endDate = as.character(Sys.Date()),
                          signalParms=c(fastDays=9, slowDays=18),
                          signalGen = "SignalGenSmaLongOnlyOpaat.R",
+                         startBalance = 10000,
                          priceData=NULL) {
     if(is.null(priceData)) {
         source("DataManager.R")
@@ -47,7 +49,7 @@ doSimulation <- function(ticker,
     }
     
     # next line sources StrategySimulator.R for addSimColumns & getNetTable
-    priceData <- addSimColumns(priceData, signalGen, signalParms)
+    priceData <- addSimColumns(priceData, signalGen, signalParms, startBalance)
     
     return(getNetTable(priceData))
 }

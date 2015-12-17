@@ -14,7 +14,7 @@
 ## 1) column with name specified in calcCol
 ## 2) Action
 allInAllOutOaatOnlyLong <- function(priceSignalsAction,
-                                    startAmt=10000.00, calcCol="Close") {
+                                    startAmt, calcCol="Close") {
     prices <- priceSignalsAction[, as.character(calcCol)]
     sampleCount <- length(priceSignalsAction$Action)
     shares <- vector(mode="integer", length=sampleCount)

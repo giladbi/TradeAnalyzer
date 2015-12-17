@@ -30,7 +30,8 @@ shinyServer(
                          as.character(input$queryDateRange[1]),
                          as.character(input$queryDateRange[2]),
                          signalParms=c(fastDays=input$fastSMA,
-                                       slowDays=input$slowSMA))
+                                       slowDays=input$slowSMA),
+                         startBalance=input$accBalance)
         })
         
         output$trades <- renderTable({
