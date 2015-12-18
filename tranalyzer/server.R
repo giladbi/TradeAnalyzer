@@ -1,4 +1,5 @@
 source("TradingEvaluator.R")
+source("StrategySimulator.R")
 
 shinyServer(
     function(input, output) {
@@ -12,9 +13,12 @@ shinyServer(
         })
         
         strategyInput <- eventReactive(input$runSimButton, {
-            paste0("Trade Signal: ", input$tradeSignal,
-                   " | Fast SMA: ", input$fastSMA,
-                   " | Slow Sma: ", input$slowSMA)
+            parms <- paste0("Trade Signal: ", input$tradeSignal,
+                            " | Fast SMA: ", input$fastSMA,
+                            " | Slow Sma: ", input$slowSMA)
+            parms <- c(parms, paste0("Position Management: ",
+                                     input$posMgmt))
+            parms
         })
         
         output$signalAndParams <- renderPrint({
@@ -38,5 +42,8 @@ shinyServer(
             runSim()
         })
         
+        output$oidTradesNet <- renderPrint(netStrategyPL(runSim()))
+        
+        output$oidTradeSignal <- renderText("fred")  #input$tradeSignal
     }
 )

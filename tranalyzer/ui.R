@@ -6,6 +6,12 @@ dow30Stocks <- read.csv(dow30Url, stringsAsFactors = FALSE)
 demo4TickersUrl <- "https://raw.githubusercontent.com/MichaelSzczepaniak/TradeAnalyzer/master/tranalyzer/data/demo4Tickers.csv"
 demoStocks <- read.csv(demo4TickersUrl, stringsAsFactors = FALSE)
 
+# Get position management strategies
+#posMgmtStratsUrl <- "https://raw.githubusercontent.com/MichaelSzczepaniak/TradeAnalyzer/master/tranalyzer/data/positionStrats.csv"
+posMgmtStratsUrl <- "./data/positionStrats.csv"
+posMgmtStrats <- read.csv(posMgmtStratsUrl, stringsAsFactors = FALSE)
+posMgmtStratsList <- as.list((posMgmtStrats$Position_Sizing_Strategy))
+
 # tickers <- dowStocks$ticker
 tickers <- demoStocks$ticker
 # names(tickers) <- dowStocks$company_name
@@ -26,34 +32,38 @@ tenYearsAgoToday <- function() {
 }
 
 # Dates to use for demo mode
-demoStartDate <- "2014-12-14"; demoEndDate <- "2015-12-14"
+demoStartDateMin <- "2005-12-15"; demoEndDateMax <- "2015-12-14"
+demoStartDate <- as.character(as.Date(demoEndDateMax)-365)
+demoEndDate <- as.character(as.Date(demoEndDateMax))
 
 pageWithSidebar(
     headerPanel("Trade Evaluator"),
     sidebarPanel(
         selectInput('ticker', label=h4("Company"),
-                    choices=demoStocks, selected=1
-        ),
+                    choices=demoStocks, selected=1),
         selectInput("tradeSignal", label=h4("Trade Signal:"),
-            choices=tradeSignalList, selected=1
-        ),
+            choices=tradeSignalList, selected=1),
         numericInput('fastSMA', 'Fast SMA:', 9, min = 2, max = 250, step = 1),
         numericInput('slowSMA', 'Slow SMA:', 18, min = 3, max = 250, step = 1),
         dateRangeInput('queryDateRange', label = h3("Quote Date Range:"),
                        start=demoStartDate, end=demoEndDate,
-                       min=demoStartDate, max=demoEndDate),
+                       min=demoStartDateMin, max=demoEndDateMax),
         numericInput('accBalance', 'Starting Account Balance:',
                      10000, min = 5000, max = 1000000, step = 500),
+        selectInput('posMgmt', label=h4("Position Management:"),
+                    choices=posMgmtStratsList, selected=1),
         actionButton('runSimButton', 'Run Simulation')
     ),
     mainPanel(
         h4('Company Ticker:'),
         verbatimTextOutput("oidstock"),
-        h4('Signal & Parameters:'),
+        h4('Signal Parameters & Position Management:'),
         verbatimTextOutput("signalAndParams"),
         h4('Query Start & End Dates:'),
         verbatimTextOutput("oidBothQueryDates"),
-        h4('Trades Using This Strategy:'),
-        tableOutput("trades")
+        h4("Trades using this signal and position management:"),
+        tableOutput("trades"),
+        h4('Net Trading Profit/Loss:'),
+        verbatimTextOutput("oidTradesNet")
     )
 )
