@@ -202,6 +202,7 @@ getDemoQuotes <- function(ticker, startDate,
     quotes <- read.csv(demoQuotesPath, stringsAsFactors = FALSE)[, -1]
     quotes$Date <- as.Date(quotes$Date)
     quotes <- filter(quotes, Date >= as.Date(startDate) & Date <=as.Date(endDate))
+    quotes$Date <- as.character(quotes$Date)
     
     return(quotes)
 }
