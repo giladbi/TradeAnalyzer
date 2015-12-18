@@ -45,7 +45,8 @@ doSimulation <- function(ticker,
                          priceData=NULL) {
     if(is.null(priceData)) {
         source("DataManager.R")
-        priceData <- getStockQuotes(ticker, startDate, endDate)
+        # priceData <- getStockQuotes(ticker, startDate, endDate) # query yahoo
+        priceData <- getDemoQuotes(ticker, startDate, endDate) # read repo csv
     }
     
     # next line sources StrategySimulator.R for addSimColumns & getNetTable
