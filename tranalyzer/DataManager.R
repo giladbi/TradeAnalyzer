@@ -190,12 +190,18 @@ writeQuotes <- function(tickers, startDate, endDate=as.character(Sys.Date())) {
     }
 }
 
+## Lower risk way to to get data for demo purposes. This reads a csv from the 
+## project repo rather than querying finance.yahoo for the data
 getDemoQuotes <- function(ticker, startDate,
                           endDate=as.character(Sys.Date())) {
     library(dplyr)
-    demoQuotesPrefix <- "https://raw.githubusercontent.com/MichaelSzczepaniak/TradeAnalyzer/master/data/"
+    demoQuotesPrefix <- "http://raw.githubusercontent.com/MichaelSzczepaniak/"
+    projectQuoteData <- "TradeAnalyzer/master/tranalyzer/data/"
+    demoQuotesPrefix <- paste0(demoQuotesPrefix, projectQuoteData)
     demoQuotesPath <- paste0(demoQuotesPrefix, ticker, ".csv")
-    quotes <- read.csv(demoQuotesPath, stringsAsFactors = FALSE)
+    quotes <- read.csv(demoQuotesPath, stringsAsFactors = FALSE)[, -1]
+    quotes$Date <- as.Date(quotes$Date)
+    quotes <- filter(quotes, Date >= as.Date(startDate) & Date <=as.Date(endDate))
     
     return(quotes)
 }
