@@ -7,7 +7,7 @@ getSP500Tickers <- function() {
     # This may not be up-to-date, but at it's something.  This data appears
     # to be amazingly hard to find. Only 494 tickers in this data: good enough
     # http://data.okfn.org/data/core/s-and-p-500-companies/r/constituents.csv
-    sp500url <- "https://www.dropbox.com/s/fiy9tvp527xebxf/sp500.csv?dl=1"
+    sp500url <- "http://www.dropbox.com/s/vaeq3286ynptnpa/sp500.csv?raw=1"
     #sp500url <- "http://data.okfn.org/data/core/s-and-p-500-companies/r/constituents.csv"
     sp500tickers <- read.csv(sp500url)
 }
