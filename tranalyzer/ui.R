@@ -3,7 +3,7 @@ dow30Url <- "http://raw.githubusercontent.com/MichaelSzczepaniak/TradeAnalyzer/m
 dow30Stocks <- read.csv(dow30Url, stringsAsFactors = FALSE)
 
 # Get 4 ticker symbols for demo
-demo4TickersUrl <- "https://raw.githubusercontent.com/MichaelSzczepaniak/TradeAnalyzer/master/tranalyzer/data/demo4Tickers.csv"
+demo4TickersUrl <- "http://raw.githubusercontent.com/MichaelSzczepaniak/TradeAnalyzer/master/tranalyzer/data/demo4Tickers.csv"
 demoStocks <- read.csv(demo4TickersUrl, stringsAsFactors = FALSE)
 
 # Get position management strategies
