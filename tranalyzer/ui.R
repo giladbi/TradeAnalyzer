@@ -45,7 +45,7 @@ fluidPage(
                     choices=stockList, selected=1),
         selectInput("tradeSignal", label=h4("Trade Signal:"),
             choices=tradeSignalList, selected=1),
-        sliderInput("fastSlowSma", h4("Fast & Slow SMA"),
+        sliderInput("fastSlowSma", h4("Fast (left) & Slow (right) SMA Days"),
                     min = 2, max = 100, value = c(9,18)),
         dateRangeInput('queryDateRange', label = h4("Quote Date Range:"),
                        start=demoStartDate, end=demoEndDate,
@@ -71,7 +71,7 @@ fluidPage(
                 verbatimTextOutput("oidBothQueryDates"),
                 h4("Trades using this signal and position management:"),
                 h6("(ProfitLoss calculation assumes $10 commission for each buy or sell)"),
-                div(style='height:235px; overflow-y: scroll',
+                div(style='height:240px; overflow-y: scroll',
                     tableOutput("trades")
                 ),
                 h4('Net Trading Profit/Loss:'),
