@@ -36,8 +36,8 @@ demoStartDateMin <- "2005-12-15"; demoEndDateMax <- "2015-12-14"
 demoStartDate <- as.character(as.Date(demoEndDateMax)-365)
 demoEndDate <- as.character(as.Date(demoEndDateMax))
 
-pageWithSidebar(
-    headerPanel("Trade Evaluator"),
+fluidPage(
+    headerPanel("Trade Analyzer"),
     sidebarPanel(
         selectInput('ticker', label=h4("Company"),
                     choices=stockList, selected=1),
@@ -62,8 +62,10 @@ pageWithSidebar(
         h4('Query Start & End Dates:'),
         verbatimTextOutput("oidBothQueryDates"),
         h4("Trades using this signal and position management:"),
-        h5("(Assumes $10 commission for each buy or sell)"),
-        tableOutput("trades"),
+        h5("(ProfitLoss calculation assumes $10 commission for each buy or sell)"),
+        div(style='height:235px; overflow-y: scroll',
+            tableOutput("trades")
+        ),
         h4('Net Trading Profit/Loss:'),
         verbatimTextOutput("oidTradesNet")
     )
