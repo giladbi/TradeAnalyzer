@@ -60,7 +60,8 @@ fluidPage(
         tabsetPanel(
             tabPanel("User Guide", h4("Overview"),
                      p(getOverviewP1()), p(getOverviewP2()),
-                     h3("Fields"), p(getCompanyFieldP1())),
+                     h3("Fields"), p(getCompanyFieldP1())
+            ),
             tabPanel("Analyzer",
                 h4('Company Ticker:'),
                 verbatimTextOutput("oidstock"),
@@ -75,6 +76,11 @@ fluidPage(
                 ),
                 h4('Net Trading Profit/Loss:'),
                 verbatimTextOutput("oidTradesNet")
+            ),
+            tabPanel("Graphics", h3("Trades identified using this signal:"),
+                     p("Plot with entries circled in green & exits in red: TODO"),
+                     h3("Simulated trade results using identified trades:"),
+                     p("Histogram of profit/loss from trades: TODO")
             )
         )
     )
