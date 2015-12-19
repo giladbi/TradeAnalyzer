@@ -195,10 +195,13 @@ writeQuotes <- function(tickers, startDate, endDate=as.character(Sys.Date())) {
 getDemoQuotes <- function(ticker, startDate,
                           endDate=as.character(Sys.Date())) {
     library(dplyr)
-    demoQuotesPrefix <- "http://raw.githubusercontent.com/MichaelSzczepaniak/"
-    projectQuoteData <- "TradeAnalyzer/master/tranalyzer/data/"
-    demoQuotesPrefix <- paste0(demoQuotesPrefix, projectQuoteData)
+    # Next 3 lines working running shiny thru loopback, but not deployed
+#     demoQuotesPrefix <- "http://raw.githubusercontent.com/MichaelSzczepaniak/"
+#     projectQuoteData <- "TradeAnalyzer/master/tranalyzer/data/"
+#     demoQuotesPrefix <- paste0(demoQuotesPrefix, projectQuoteData)
+    demoQuotesPrefix <- "./data/"
     demoQuotesPath <- paste0(demoQuotesPrefix, ticker, ".csv")
+    
     quotes <- read.csv(demoQuotesPath, stringsAsFactors = FALSE)[, -1]
     quotes$Date <- as.Date(quotes$Date)
     quotes <- filter(quotes, Date >= as.Date(startDate) & Date <=as.Date(endDate))
