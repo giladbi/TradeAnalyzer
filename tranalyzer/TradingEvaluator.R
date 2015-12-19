@@ -2,13 +2,13 @@
 
 ## Development convenience method. Just changes working dir to where it needs
 ## to be for this project.  Add salt to taste...
-setWorking <- function(laptopSys=TRUE) {
-    dirSys <- "C:/data/"  # laptop
-    if(!laptopSys) { dirSys <- "D:/" }  # workstation
-    dirProject <- "dev/TradeAnalyzer"
-    dirWorking <- paste0(dirSys, dirProject)
-    setwd(dirWorking)
-}
+# setWorking <- function(laptopSys=TRUE) {
+#     dirSys <- "C:/data/"  # laptop
+#     if(!laptopSys) { dirSys <- "D:/" }  # workstation
+#     dirProject <- "dev/TradeAnalyzer"
+#     dirWorking <- paste0(dirSys, dirProject)
+#     setwd(dirWorking)
+# }
 
 addSimColumns <- function(prices, signalGen, sigParms, startBalance) {
     source(signalGen)
