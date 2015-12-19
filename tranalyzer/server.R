@@ -43,7 +43,5 @@ shinyServer(
         })
         
         output$oidTradesNet <- renderPrint(netStrategyPL(runSim()))
-        
-        output$oidTradeSignal <- renderText("fred")  #input$tradeSignal
     }
 )
