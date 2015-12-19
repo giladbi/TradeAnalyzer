@@ -1,3 +1,5 @@
+source("TranalyzerUserGuide.R")
+
 # Get all 30 DJIA symbols to populate the Company select box
 # dow30Url <- "http://raw.githubusercontent.com/MichaelSzczepaniak/TradeAnalyzer/master/tranalyzer/data/dow30.csv"
 # dow30Stocks <- read.csv(dow30Url, stringsAsFactors = FALSE)
@@ -55,18 +57,25 @@ fluidPage(
         actionButton('runSimButton', 'Run Simulation')
     ),
     mainPanel(
-        h4('Company Ticker:'),
-        verbatimTextOutput("oidstock"),
-        h4('Signal Parameters & Position Management:'),
-        verbatimTextOutput("signalAndParams"),
-        h4('Query Start & End Dates:'),
-        verbatimTextOutput("oidBothQueryDates"),
-        h4("Trades using this signal and position management:"),
-        h5("(ProfitLoss calculation assumes $10 commission for each buy or sell)"),
-        div(style='height:235px; overflow-y: scroll',
-            tableOutput("trades")
-        ),
-        h4('Net Trading Profit/Loss:'),
-        verbatimTextOutput("oidTradesNet")
+        tabsetPanel(
+            tabPanel("User Guide", h4("Overview"),
+                     p(getOverviewP1()), p(getOverviewP2()),
+                     h3("Fields"), p(getCompanyFieldP1())),
+            tabPanel("Analyzer",
+                h4('Company Ticker:'),
+                verbatimTextOutput("oidstock"),
+                h4('Signal Parameters & Position Management:'),
+                verbatimTextOutput("signalAndParams"),
+                h4('Query Start & End Dates:'),
+                verbatimTextOutput("oidBothQueryDates"),
+                h4("Trades using this signal and position management:"),
+                h6("(ProfitLoss calculation assumes $10 commission for each buy or sell)"),
+                div(style='height:235px; overflow-y: scroll',
+                    tableOutput("trades")
+                ),
+                h4('Net Trading Profit/Loss:'),
+                verbatimTextOutput("oidTradesNet")
+            )
+        )
     )
 )
