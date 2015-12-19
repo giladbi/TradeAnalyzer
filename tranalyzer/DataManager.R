@@ -201,6 +201,7 @@ getDemoQuotes <- function(ticker, startDate,
 #     demoQuotesPrefix <- paste0(demoQuotesPrefix, projectQuoteData)
     demoQuotesPrefix <- "./data/"
     demoQuotesPath <- paste0(demoQuotesPrefix, ticker, ".csv")
+    
     quotes <- read.csv(demoQuotesPath, stringsAsFactors = FALSE)[, -1]
     quotes$Date <- as.Date(quotes$Date)
     quotes <- filter(quotes, Date >= as.Date(startDate) & Date <=as.Date(endDate))
