@@ -15,17 +15,21 @@ getOverviewP3 <- function() {
     return(content);
 }
 
-getCompanyP1 <- function() {
+getOverviewP4 <- function() {
+    content <- "  A description of the how the selected trade signal works is described in the "
+}
+
+getFieldsCompanyP1 <- function() {
     content <- "If a drop down is visible, you are running in"
     return(content);
 }
 
-getCompanyP2 <- function() {
-    content <- " and four company tickers will be available: Apple, GE, Home Depot, and Johnson & Johnson."
+getFieldsCompanyP2 <- function() {
+    content <- " and four company tickers will be available: Apple (default), GE, Home Depot, and Johnson & Johnson."
     return(content);
 }
 
-getTradeSignalP1 <- function() {
-    content <- "trade signal stuff"
+getFieldsTradeSignalP1 <- function() {
+    content <- ""
     return(content);
 }

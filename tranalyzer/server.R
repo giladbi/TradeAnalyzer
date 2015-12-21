@@ -25,6 +25,10 @@ shinyServer(
             strategyInput()
         })
         
+        output$oidTradeSignal <- renderText(
+            paste0("Trade Signal: ", input$tradeSignal)
+            )
+        
         output$oidBothQueryDates <- renderPrint({
             dateRangeInput()
         })

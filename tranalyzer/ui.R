@@ -43,9 +43,9 @@ fluidPage(
     sidebarPanel(
         selectInput('ticker', label=h4("Company"),
                     choices=stockList, selected=1),
-        selectInput("tradeSignal", label=h4("Trade Signal:"),
+        selectInput('tradeSignal', label=h4("Trade Signal:"),
             choices=tradeSignalList, selected=1),
-        sliderInput("fastSlowSma", h4("Fast (left) & Slow (right) SMA Days"),
+        sliderInput('fastSlowSma', h4("Fast (left) & Slow (right) SMA Days"),
                     min = 2, max = 100, value = c(9,18)),
         dateRangeInput('queryDateRange', label = h4("Quote Date Range:"),
                        start=demoStartDate, end=demoEndDate,
@@ -61,12 +61,13 @@ fluidPage(
             tabPanel("User Guide", h4("Overview"),
                      p(getOverviewP1(), strong('Run Simulation'),
                        getOverviewP2(), strong('Analyzer'),
-                       getOverviewP3(), strong('Graphics'), 'tab.'),
+                       getOverviewP3(), strong('Graphics'), 'tab.',
+                       getOverviewP4(), strong('Signal'), 'tab.'),
                      h3("Fields"),
                      p(strong('Company - '),
-                       getCompanyP1(), strong('Demo mode'),
-                       getCompanyP2()),
-                     p(strong('Trade Signal - '), getTradeSignalP1())
+                       getFieldsCompanyP1(), strong('Demo mode'),
+                       getFieldsCompanyP2()),
+                     p(strong('Trade Signal - '), getFieldsTradeSignalP1())
             ),
             tabPanel("Analyzer",
                 h4('Company Ticker:'),
@@ -87,6 +88,9 @@ fluidPage(
                      p("Plot with entries circled in green & exits in red: TODO"),
                      h3("Simulated trade results using identified trades:"),
                      p("Histogram of profit/loss from trades: TODO")
+            ),
+            tabPanel("Signal", h3(textOutput("oidTradeSignal")),
+                     p("describe the starategy here...")
             )
         )
     )
