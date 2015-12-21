@@ -59,8 +59,14 @@ fluidPage(
     mainPanel(
         tabsetPanel(
             tabPanel("User Guide", h4("Overview"),
-                     p(getOverviewP1()), p(getOverviewP2()),
-                     h3("Fields"), p(getCompanyFieldP1())
+                     p(getOverviewP1(), strong('Run Simulation'),
+                       getOverviewP2(), strong('Analyzer'),
+                       getOverviewP3(), strong('Graphics'), 'tab.'),
+                     h3("Fields"),
+                     p(strong('Company - '),
+                       getCompanyP1(), strong('Demo mode'),
+                       getCompanyP2()),
+                     p(strong('Trade Signal - '), getTradeSignalP1())
             ),
             tabPanel("Analyzer",
                 h4('Company Ticker:'),
