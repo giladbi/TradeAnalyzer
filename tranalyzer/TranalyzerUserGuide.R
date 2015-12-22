@@ -16,7 +16,7 @@ getOverviewP3 <- function() {
 }
 
 getOverviewP4 <- function() {
-    content <- "  A description of the how the selected trade signal works is described in the "
+    content <- "  A description of how the selected trade signal works is described in the "
 }
 
 getFieldsCompanyP1 <- function() {
@@ -30,6 +30,38 @@ getFieldsCompanyP2 <- function() {
 }
 
 getFieldsTradeSignalP1 <- function() {
-    content <- ""
+    content <- "This is this list of implementations that create the signals that tells the simulator when to buy, sell, or hold a position. Only the "
     return(content);
+}
+
+getFieldsTradeSignalP2 <- function() {
+    content <- " is implemented in the demo.  The SMA days must be different or you will get an error."
+    return(content);
+}
+
+getFieldsTradeSignalP3 <- function() {
+    content <- "Under Trade Signal will be one or more controls to specify the parameters specific to the selected signal.  "
+    return(content);
+}
+
+getFieldsTradeSignalP4 <- function() {
+    content <- "Since there is only one signal implemented in the demo, only the controls to set the fast and slow SMA days will be displayed."
+    return(content);
+}
+
+getQDateRangeP1 <- function() {
+    content <- "Specifies the starting and ending dates to run the simulation over.  The latest ending date (the date on the right) allowed in the demo is December 14, 2015.  The earliest starting date allowed (the date on the left) is December 15, 2005 even though the default start date is set 1 year prior to the latest allowed ending date in the demo."
+    return(content);
+}
+
+getStartAccountBalP1 <- function() {
+    content <- "This field tells the simulator how much money (USD) is available to buy shares.  The larger the balance, the more shares the simulator can purchase."
+}
+
+getPositionMgmtP1 <- function() {
+    content <- "Only the default value AIAO-OPAAT-OL is implemented in the demo.  This stands for "
+}
+
+getPositionMgmtP2 <- function() {
+    content <- "All In All Out - One Position At A Time - Only Long (positions allowed)."
 }

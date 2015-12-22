@@ -58,16 +58,23 @@ fluidPage(
     ),
     mainPanel(
         tabsetPanel(
-            tabPanel("User Guide", h4("Overview"),
+            tabPanel('User Guide', h4('Overview'),
                      p(getOverviewP1(), strong('Run Simulation'),
                        getOverviewP2(), strong('Analyzer'),
                        getOverviewP3(), strong('Graphics'), 'tab.',
                        getOverviewP4(), strong('Signal'), 'tab.'),
-                     h3("Fields"),
+                     h3('Fields'),
                      p(strong('Company - '),
                        getFieldsCompanyP1(), strong('Demo mode'),
                        getFieldsCompanyP2()),
-                     p(strong('Trade Signal - '), getFieldsTradeSignalP1())
+                     p(strong('Trade Signal - '), getFieldsTradeSignalP1(),
+                       strong('SMA cross-over'), getFieldsTradeSignalP2()),
+                     p(getFieldsTradeSignalP3(), getFieldsTradeSignalP4()),
+                     p(strong('Quote Date Range - '), getQDateRangeP1()),
+                     p(strong('Starting Account Balance - '),
+                       getStartAccountBalP1()),
+                     p(strong('Postion Management - '), getPositionMgmtP1(),
+                       em(getPositionMgmtP2()))
             ),
             tabPanel("Analyzer",
                 h4('Company Ticker:'),
