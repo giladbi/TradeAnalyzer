@@ -58,7 +58,7 @@ shinyServer(
         
         output$oidTradesNet <- renderPrint(netStrategyPL(runSim()))
         
-        output$oidTradeSignalsPlot <- renderPlot({
+        tradeSignalPlot <- eventReactive(input$runSimButton, {
             makeTradeSignalsPlot(input$ticker,
                                  as.character(input$queryDateRange[1]),
                                  as.character(input$queryDateRange[2]),
@@ -69,7 +69,7 @@ shinyServer(
                                  shift=0.02)
         })
         
-        output$oidTradesResultsHist <- renderPlot({
+        resultsHist <- eventReactive(input$runSimButton, {
             makeTradesResultsHist(input$ticker,
                                   as.character(input$queryDateRange[1]),
                                   as.character(input$queryDateRange[2]),
@@ -77,6 +77,14 @@ shinyServer(
                                                 slowDays=input$fastSlowSma[2]),
                                   signalGen="SignalGenSmaLongOnlyOpaat.R",
                                   startBalance=input$accBalance)
+        })
+        
+        output$oidTradeSignalsPlot <- renderPlot({
+            tradeSignalPlot()
+        })
+        
+        output$oidTradesResultsHist <- renderPlot({
+            resultsHist()
         })
     }
 )
