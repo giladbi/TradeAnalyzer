@@ -69,7 +69,7 @@ makeTradeSignalsPlot <- function(ticker,
     x <- as.Date(priceData$Date) # x axis values
     plot(x, y=priceData$Close, type="l", lwd=2,
          col='black', xlab="Date", ylab="Price ($ USD)")
-    title(paste0("Trades for ", ticker, " using SMA cross-over"))
+    title(paste0("Completed trades for ", ticker, " using SMA cross-over"))
     lines(x, y=priceData$FastSma, col='red')
     lines(x, y=priceData$SlowSma, col='blue')
     # get the sell points
@@ -82,4 +82,7 @@ makeTradeSignalsPlot <- function(ticker,
     entryDates <- as.Date(buys$Date)
     buyPrices <- pmin(buys$FastSma, buys$SlowSma)
     points(entryDates, buyPrices, pch=2, cex=3.0, col='green', lwd=2)
+    legend('bottomright', c("Close", "Fast SMA", "Slow SMA", "Buy Signal", "Sell Signal"),
+           lty=c(1,1,1,0,0), pch=c(NA, NA, NA, 2, 6),
+           col=c('black', 'red', 'blue', 'green', 'red'))
 }
