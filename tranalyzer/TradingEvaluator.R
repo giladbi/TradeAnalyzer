@@ -56,12 +56,8 @@ doSimulation <- function(ticker,
 }
 
 ## Create plot that identifies the trades called out by the signal
-makeTradeSignalsPlot <- function(ticker,
-                                 startDate = as.character(Sys.Date()-365),
-                                 endDate = as.character(Sys.Date()),
-                                 signalParms=c(fastDays=9, slowDays=18),
-                                 signalGen = "SignalGenSmaLongOnlyOpaat.R",
-                                 startBalance = 10000) {
+makeTradeSignalsPlot <- function(ticker, startDate,endDate,
+                                 signalParms, signalGen, startBalance) {
     source("DataManager.R")
     priceData <- getDemoQuotes(ticker, startDate, endDate) # read repo csv
     priceData <- addSimColumns(priceData, signalGen, signalParms, startBalance)
@@ -81,7 +77,15 @@ makeTradeSignalsPlot <- function(ticker,
     entryDates <- as.Date(buys$Date)
     buyPrices <- pmin(buys$FastSma, buys$SlowSma)
     points(entryDates, buyPrices, pch=2, cex=3.0, col='green', lwd=2)
-    legend('bottom', c("Close", "Fast SMA", "Slow SMA", "Buy Signal", "Sell Signal"),
+    legend('bottom',
+           c("Close Price", "Fast SMA", "Slow SMA", "Buy Signal", "Sell Signal"),
            lty=c(1,1,1,0,0), pch=c(NA, NA, NA, 2, 6),
            col=c('black', 'red', 'blue', 'green', 'red'))
+}
+
+makeTradesResultsHist <- function(ticker, startDate,endDate,
+                                  signalParms, signalGen, startBalance) {
+    sim <- doSimulation(ticker, startDate, endDate,
+                        signalParms, signalGen, startBalance)
+    hist(sim$ProfitLoss)
 }

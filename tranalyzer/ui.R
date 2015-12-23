@@ -94,7 +94,7 @@ fluidPage(
             tabPanel("Graphics", h3("Trades identified using this signal:"),
                      plotOutput("oidTradeSignalsPlot"),
                      h3("Simulated trade results using identified trades:"),
-                     p("Histogram of profit/loss from trades: TODO")
+                     plotOutput("oidTradesResultsHist")
             ),
             tabPanel("Signal", h3(textOutput("oidTradeSignal")),
                      p("describe the starategy here...")

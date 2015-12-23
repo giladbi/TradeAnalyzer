@@ -64,7 +64,18 @@ shinyServer(
                                  as.character(input$queryDateRange[2]),
                                  signalParms=c(fastDays=input$fastSlowSma[1],
                                                slowDays=input$fastSlowSma[2]),
+                                 signalGen="SignalGenSmaLongOnlyOpaat.R",
                                  startBalance=input$accBalance)
+        })
+        
+        output$oidTradesResultsHist <- renderPlot({
+            makeTradesResultsHist(input$ticker,
+                                  as.character(input$queryDateRange[1]),
+                                  as.character(input$queryDateRange[2]),
+                                  signalParms=c(fastDays=input$fastSlowSma[1],
+                                                slowDays=input$fastSlowSma[2]),
+                                  signalGen="SignalGenSmaLongOnlyOpaat.R",
+                                  startBalance=input$accBalance)
         })
     }
 )
