@@ -87,5 +87,8 @@ makeTradesResultsHist <- function(ticker, startDate,endDate,
                                   signalParms, signalGen, startBalance) {
     sim <- doSimulation(ticker, startDate, endDate,
                         signalParms, signalGen, startBalance)
-    hist(sim$ProfitLoss)
+    histTitle <- paste0("Results of ", ticker, " trades using SMA cross-over")
+    hist(sim$ProfitLoss, main=histTitle, xlab="Trade Net ($ USD)",
+         ylab="Trade Count", yaxt='n')
+    axis(2, at=0:length(sim$ProfitLoss))
 }
