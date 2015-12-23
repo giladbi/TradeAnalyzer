@@ -57,5 +57,14 @@ shinyServer(
         })
         
         output$oidTradesNet <- renderPrint(netStrategyPL(runSim()))
+        
+        output$oidTradeSignalsPlot <- renderPlot({
+            makeTradeSignalsPlot(input$ticker,
+                                 as.character(input$queryDateRange[1]),
+                                 as.character(input$queryDateRange[2]),
+                                 signalParms=c(fastDays=input$fastSlowSma[1],
+                                               slowDays=input$fastSlowSma[2]),
+                                 startBalance=input$accBalance)
+        })
     }
 )

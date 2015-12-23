@@ -92,7 +92,7 @@ fluidPage(
                 verbatimTextOutput("oidTradesNet")
             ),
             tabPanel("Graphics", h3("Trades identified using this signal:"),
-                     p("Plot with entries circled in green & exits in red: TODO"),
+                     plotOutput("oidTradeSignalsPlot"),
                      h3("Simulated trade results using identified trades:"),
                      p("Histogram of profit/loss from trades: TODO")
             ),

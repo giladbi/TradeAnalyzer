@@ -61,8 +61,7 @@ makeTradeSignalsPlot <- function(ticker,
                                  endDate = as.character(Sys.Date()),
                                  signalParms=c(fastDays=9, slowDays=18),
                                  signalGen = "SignalGenSmaLongOnlyOpaat.R",
-                                 startBalance = 10000,
-                                 priceData=NULL) {
+                                 startBalance = 10000) {
     source("DataManager.R")
     priceData <- getDemoQuotes(ticker, startDate, endDate) # read repo csv
     priceData <- addSimColumns(priceData, signalGen, signalParms, startBalance)
@@ -82,7 +81,7 @@ makeTradeSignalsPlot <- function(ticker,
     entryDates <- as.Date(buys$Date)
     buyPrices <- pmin(buys$FastSma, buys$SlowSma)
     points(entryDates, buyPrices, pch=2, cex=3.0, col='green', lwd=2)
-    legend('bottomright', c("Close", "Fast SMA", "Slow SMA", "Buy Signal", "Sell Signal"),
+    legend('bottom', c("Close", "Fast SMA", "Slow SMA", "Buy Signal", "Sell Signal"),
            lty=c(1,1,1,0,0), pch=c(NA, NA, NA, 2, 6),
            col=c('black', 'red', 'blue', 'green', 'red'))
 }
