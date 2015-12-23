@@ -69,7 +69,7 @@ getNetTable <- function(simResults, priceCol="Close",
     sellPrices <- sells[, as.character(priceCol)]
     # ignore possible currently open position
     buys <- filter(simResults, Actions=="BUY")[1:completeCount, ]
-    entryDates <- buys$Date;
+    entryDates <- buys$Date
     buyPrices <- buys[, as.character(priceCol)]
     netPLs <- buys$Shares * (sells[, as.character(priceCol)] -
                              buys[, as.character(priceCol)])

@@ -55,3 +55,31 @@ doSimulation <- function(ticker,
     return(getNetTable(priceData))
 }
 
+## Create plot that identifies the trades called out by the signal
+makeTradeSignalsPlot <- function(ticker,
+                                 startDate = as.character(Sys.Date()-365),
+                                 endDate = as.character(Sys.Date()),
+                                 signalParms=c(fastDays=9, slowDays=18),
+                                 signalGen = "SignalGenSmaLongOnlyOpaat.R",
+                                 startBalance = 10000,
+                                 priceData=NULL) {
+    source("DataManager.R")
+    priceData <- getDemoQuotes(ticker, startDate, endDate) # read repo csv
+    priceData <- addSimColumns(priceData, signalGen, signalParms, startBalance)
+    x <- as.Date(priceData$Date) # x axis values
+    plot(x, y=priceData$Close, type="l", lwd=2,
+         col='black', xlab="Date", ylab="Price ($ USD)")
+    title(paste0("Trades for ", ticker, " using SMA cross-over"))
+    lines(x, y=priceData$FastSma, col='red')
+    lines(x, y=priceData$SlowSma, col='blue')
+    # get the sell points
+    sells <- filter(priceData, Actions=="SELL")
+    exitDates <- as.Date(sells$Date)
+    sellPrices <- pmax(sells$FastSma, sells$SlowSma)
+    points(exitDates, sellPrices, pch=6, cex=3.0, col='red', lwd=2)
+    completeCount <- length(sells$Shares)
+    buys <- filter(priceData, Actions=="BUY")[1:completeCount, ]
+    entryDates <- as.Date(buys$Date)
+    buyPrices <- pmin(buys$FastSma, buys$SlowSma)
+    points(entryDates, buyPrices, pch=2, cex=3.0, col='green', lwd=2)
+}
