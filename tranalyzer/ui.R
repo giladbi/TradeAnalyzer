@@ -21,9 +21,13 @@ names(tickers) <- paste0(demoStocks$ticker, " = ", demoStocks$company_name)
 stockList <- as.list(tickers)
 # Get the trading signals to populate Trade Signal select box
 # tradeSignalsUrl <- "http://raw.githubusercontent.com/MichaelSzczepaniak/TradeAnalyzer/master/tranalyzer/data/trade_signals.csv"
-tradeSignalsUrl <- "./data/trade_signals.csv"
+tradeSignalsUrl <- "./data/signals/trade_signals.csv"
 tradeSignals <- read.csv(tradeSignalsUrl, stringsAsFactors = FALSE)
 tradeSignalList <- as.list((tradeSignals$trade_signal))
+
+## description(s) of signals - TODO This needs to be generalized to handle multiple strategies
+strategyUrl <- paste0("./data/signals/", tradeSignals$description_file[1])
+signalContent <- readChar(strategyUrl, file.info(strategyUrl)$size)
 
 ## Returns the date that's 10 years ago today in the format:
 ## yyyy-mm-dd.
@@ -92,12 +96,15 @@ fluidPage(
                 verbatimTextOutput("oidTradesNet")
             ),
             tabPanel("Graphics", h3("Trades identified using this signal:"),
+                     h5(paste0("In the chart below, BUY signal triangles are ",
+                               "shifted down and SELL triangles are shifted ",
+                               "up so signals are more visible:")),
                      plotOutput("oidTradeSignalsPlot"),
                      h3("Simulated trade results using identified trades:"),
                      plotOutput("oidTradesResultsHist")
             ),
             tabPanel("Signal", h3(textOutput("oidTradeSignal")),
-                     p("describe the starategy here...")
+                     HTML(signalContent)  # https://gist.github.com/jcheng5/4052973
             )
         )
     )

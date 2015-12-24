@@ -1,0 +1,11 @@
+<p>This signal requires specifying two parameters: a slow and a fast simple moving average (SMA) number of days.  If you are unfamiliar with what a simple moving average is, the link below describes it in detail:</p><p><a href=http://www.investopedia.com/terms/m/movingaverage.asp>http://www.investopedia.com/terms/m/movingaverage.asp</a></p><p>A simple moving average simply calculates the average price over n days and this average rolls forward looking back n days when calculating new values.  For example, if we wanted to calculate a 3 day SMA (aka SMA 3), it would look like this:</p>
+<pre>
+Price  SMA 3
+-----  -----
+42.58  no value
+42.50  no value
+41.82  42.30 = (42.58 + 42.50 + 41.82) / 3
+41.45  41.92 = (42.50 + 41.82 + 41.45) / 3
+41.55  41.61 = (41.82 + 41.45 + 42.55) / 3
+41.43  41.48 = ...
+</pre><p>The larger the number of days used to calculate a SMA, the slower it reacts to changes in price because more history is used to calculate it.  Similarly, a fast SMA uses less days in its calculation and changes more quickly because less history is used in its calculation.</p><p>An SMA cross-over buy signal typically occurs when a fast SMA moves above a slow SMA.  A sell signal occurs under this strategy when the fast SMA drops below the slow SMA.</p>
