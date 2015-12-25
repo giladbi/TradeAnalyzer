@@ -30,7 +30,7 @@ getFieldsCompanyP2 <- function() {
 }
 
 getFieldsTradeSignalP1 <- function() {
-    content <- "This is this list of implementations that create the signals that tells the simulator when to buy, sell, or hold a position. Only the "
+    content <- "This is the list of implementations that create the signals that tells the simulator when to buy, sell, or hold a position. Only the "
     return(content);
 }
 

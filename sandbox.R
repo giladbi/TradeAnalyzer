@@ -41,3 +41,11 @@ d1 <- "1998-07-11"
 d2 <- "2015-12-12"
 startDate <- d1
 endDate <- d2
+
+demoStartDateMin <- "2005-12-15"; demoEndDateMax <- "2015-12-14"
+demoStartDate <- as.character(as.Date(demoEndDateMax)-365)
+demoEndDate <- as.character(as.Date(demoEndDateMax))
+jnj_2014.12.14to2015.12.14 <- doSimulation("JNJ", demoStartDate, demoEndDate)
+ge_2014.12.14to2015.12.14 <- doSimulation("GE", demoStartDate, demoEndDate)
+hd_2014.12.14to2015.12.14 <- doSimulation("HD", demoStartDate, demoEndDate)
+aapl_2014.12.14to2015.12.14 <- doSimulation("AAPL", demoStartDate, demoEndDate)
