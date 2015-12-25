@@ -5,7 +5,7 @@ The purpose of this project is to develop a proof-of-concept (PoC) data product 
 
 Each strategy to be evaluated by the TA requires writing three components.  The first component is a **signal generator**.  The second component is the **action generator** which takes the signals from the signal generator and creates recommended actions such as: *buy*, *sell*, or *hold*.  The third component is the **simulator** which takes the actions from the action generator, a position sizing strategy, and an initial account balance as input and outputs positions and account balances on each day of the data set.
 
-A short 5 slide presentation of the project can be found [here](http://example.com)
+A short 5 slide presentation of the project can be found [here](http://michaelszczepaniak.github.io/TranalyzerPresentation)
 
 ## Architecture
 The TA is architected to be modular in that to implement a new strategy, you only need to write a new stratgey which conforms to the interface.
