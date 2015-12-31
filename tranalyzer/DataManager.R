@@ -145,7 +145,7 @@ getSinglePeriodYqlQuotes <- function(ticker, startYYYY_MM_DD,
 
 ## Returns a dataframe with quotes between startDate and endDate
 ## for ticker symbol ticker.  endDate defaults to todays date.
-getStockQuotes <- function(ticker, startDate, 
+getStockQuotes <- function(ticker, startDate,
                            endDate=as.character(Sys.Date())) {
     dateRanges <- getDateRanges(startDate, endDate)
     quoteCount <- length(dateRanges)

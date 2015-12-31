@@ -45,8 +45,8 @@ doSimulation <- function(ticker,
                          priceData=NULL) {
     if(is.null(priceData)) {
         source("DataManager.R")
-        # priceData <- getStockQuotes(ticker, startDate, endDate) # query yahoo
-        priceData <- getDemoQuotes(ticker, startDate, endDate) # read repo csv
+        priceData <- getStockQuotes(ticker, startDate, endDate) # query yahoo
+        # priceData <- getDemoQuotes(ticker, startDate, endDate) # read demo data
     }
     
     # next line sources StrategySimulator.R for addSimColumns & getNetTable
@@ -60,7 +60,8 @@ doSimulation <- function(ticker,
 makeTradeSignalsPlot <- function(ticker, startDate ,endDate, signalParms,
                                  signalGen, startBalance, shift) {
     source("DataManager.R")
-    priceData <- getDemoQuotes(ticker, startDate, endDate) # read repo csv
+    # priceData <- getDemoQuotes(ticker, startDate, endDate) # read repo csv
+    priceData <- getStockQuotes(ticker, startDate, endDate) # query for data
     priceData <- addSimColumns(priceData, signalGen, signalParms, startBalance)
     x <- as.Date(priceData$Date) # x axis values
     plot(x, y=priceData$Close, type="l", lwd=2,

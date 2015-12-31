@@ -58,6 +58,8 @@ shinyServer(
         
         output$oidTradesNet <- renderPrint(netStrategyPL(runSim()))
         
+        ## Creates the upper trade signals plot in Graphics tab
+        ## Note: makeTradeSignalsPlot impl'd in TradingEvaluator.R
         tradeSignalPlot <- eventReactive(input$runSimButton, {
             makeTradeSignalsPlot(input$ticker,
                                  as.character(input$queryDateRange[1]),

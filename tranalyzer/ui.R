@@ -5,9 +5,8 @@ source("TranalyzerUserGuide.R")
 # dow30Stocks <- read.csv(dow30Url, stringsAsFactors = FALSE)
 
 # Get 4 ticker symbols for demo
-#demo4TickersUrl <- "http://raw.githubusercontent.com/MichaelSzczepaniak/TradeAnalyzer/master/tranalyzer/data/demo4Tickers.csv"
-demo4TickersUrl <- "./data/demo4Tickers.csv"
-demoStocks <- read.csv(demo4TickersUrl, stringsAsFactors = FALSE)
+#tickersUrl <- "./data/demo4Tickers.csv"
+#demoStocks <- read.csv(tickersUrl, stringsAsFactors = FALSE)
 
 # Get position management strategies
 # posMgmtStratsUrl <- "http://raw.githubusercontent.com/MichaelSzczepaniak/TradeAnalyzer/master/tranalyzer/data/positionStrats.csv"
@@ -15,10 +14,10 @@ posMgmtStratsUrl <- "./data/positionStrats.csv"
 posMgmtStrats <- read.csv(posMgmtStratsUrl, stringsAsFactors = FALSE)
 posMgmtStratsList <- as.list((posMgmtStrats$Position_Sizing_Strategy))
 
-# tickers <- dowStocks$ticker
-tickers <- demoStocks$ticker
-names(tickers) <- paste0(demoStocks$ticker, " = ", demoStocks$company_name)
-stockList <- as.list(tickers)
+#tickers <- demoStocks$ticker
+#names(tickers) <- paste0(demoStocks$ticker, " = ", demoStocks$company_name)
+#stockList <- as.list(tickers)
+
 # Get the trading signals to populate Trade Signal select box
 # tradeSignalsUrl <- "http://raw.githubusercontent.com/MichaelSzczepaniak/TradeAnalyzer/master/tranalyzer/data/trade_signals.csv"
 tradeSignalsUrl <- "./data/signals/trade_signals.csv"
@@ -38,22 +37,26 @@ tenYearsAgoToday <- function() {
 }
 
 # Dates to use for demo mode
-demoStartDateMin <- "2005-12-15"; demoEndDateMax <- "2015-12-14"
-demoStartDate <- as.character(as.Date(demoEndDateMax)-365)
-demoEndDate <- as.character(as.Date(demoEndDateMax))
+# demoStartDateMin <- "2005-12-15"; demoEndDateMax <- "2015-12-14"
+# simStartDate <- as.character(as.Date(demoEndDateMax)-365)
+# simEndDate <- as.character(as.Date(demoEndDateMax))
+
+# Default dates to use with live data
+simEndDate <- as.character(Sys.Date())
+simStartDate <- as.character(Sys.Date() - 365)
+simStartDateMin <- tenYearsAgoToday(); simEndDateMax <- simEndDate
 
 fluidPage(
     headerPanel("Trade Analyzer"),
     sidebarPanel(
-        selectInput('ticker', label=h4("Company"),
-                    choices=stockList, selected=1),
+        textInput('ticker', label=h4("Company")),
         selectInput('tradeSignal', label=h4("Trade Signal:"),
-            choices=tradeSignalList, selected=1),
+                    choices=tradeSignalList, selected=1),
         sliderInput('fastSlowSma', h4("Fast (left) & Slow (right) SMA Days"),
                     min = 2, max = 100, value = c(9,18)),
         dateRangeInput('queryDateRange', label = h4("Quote Date Range:"),
-                       start=demoStartDate, end=demoEndDate,
-                       min=demoStartDateMin, max=demoEndDateMax),
+                       start=simStartDate, end=simEndDate,
+                       min=simStartDateMin, max=simEndDateMax),
         numericInput('accBalance', 'Starting Account Balance:',
                      10000, min = 5000, max = 1000000, step = 500),
         selectInput('posMgmt', label=h4("Position Management:"),
@@ -62,24 +65,24 @@ fluidPage(
     ),
     mainPanel(
         tabsetPanel(
-            tabPanel('User Guide', h4('Overview'),
-                     p(getOverviewP1(), strong('Run Simulation'),
-                       getOverviewP2(), strong('Analyzer'),
-                       getOverviewP3(), strong('Graphics'), 'tab.',
-                       getOverviewP4(), strong('Signal'), 'tab.'),
-                     h3('Fields'),
-                     p(strong('Company - '),
-                       getFieldsCompanyP1(), strong('Demo mode'),
-                       getFieldsCompanyP2()),
-                     p(strong('Trade Signal - '), getFieldsTradeSignalP1(),
-                       strong('SMA cross-over'), getFieldsTradeSignalP2()),
-                     p(getFieldsTradeSignalP3(), getFieldsTradeSignalP4()),
-                     p(strong('Quote Date Range - '), getQDateRangeP1()),
-                     p(strong('Starting Account Balance - '),
-                       getStartAccountBalP1()),
-                     p(strong('Postion Management - '), getPositionMgmtP1(),
-                       em(getPositionMgmtP2()))
-            ),
+#             tabPanel('User Guide', h4('Overview'),
+#                      p(getOverviewP1(), strong('Run Simulation'),
+#                        getOverviewP2(), strong('Analyzer'),
+#                        getOverviewP3(), strong('Graphics'), 'tab.',
+#                        getOverviewP4(), strong('Signal'), 'tab.'),
+#                      h3('Fields'),
+#                      p(strong('Company - '),
+#                        getFieldsCompanyP1(), strong('Demo mode'),
+#                        getFieldsCompanyP2()),
+#                      p(strong('Trade Signal - '), getFieldsTradeSignalP1(),
+#                        strong('SMA cross-over'), getFieldsTradeSignalP2()),
+#                      p(getFieldsTradeSignalP3(), getFieldsTradeSignalP4()),
+#                      p(strong('Quote Date Range - '), getQDateRangeP1()),
+#                      p(strong('Starting Account Balance - '),
+#                        getStartAccountBalP1()),
+#                      p(strong('Postion Management - '), getPositionMgmtP1(),
+#                        em(getPositionMgmtP2()))
+#             ),
             tabPanel("Analyzer",
                 h4('Company Ticker:'),
                 verbatimTextOutput("oidstock"),
